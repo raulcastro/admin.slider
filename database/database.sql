@@ -1,0 +1,6 @@
+CREATE DATABASE db161140_slider;
+
+## CREATE USER 'db161140_2go'@'localhost' IDENTIFIED BY 'where2GO';
+
+GRANT ALL PRIVILEGES ON *.* TO 'db161140_2go'@'localhost' WITH GRANT OPTION;
+
