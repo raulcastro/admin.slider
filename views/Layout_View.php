@@ -90,20 +90,12 @@ class Layout_View
 					echo self::getCategoryHead();
  				break;
 				
-				case 'add-owner':
-					echo self::getAddOwnerHead();
+				case 'add-store':
+					echo self::getAddStoreHead();
 				break;
 				
-				case 'member':
-					echo self::getMemberHead();
-				break;
-				
-				case 'tasks':
-					echo self::getTasksHead();
-				break;
-				
-				case 'profile':
-					echo self :: getProfileHead();
+				case 'store':
+					echo self::getStoreHead();
 				break;
 			}
 			?>
@@ -123,7 +115,6 @@ class Layout_View
 		                <h1><?php echo $this->data['title']; ?></h1>
 		                <ol class="breadcrumb">
 		                    <li><a href="#"><i class="fa <?php echo $this->data['icon']; ?>"></i><?php echo $this->data['title']; ?></a></li>
-		                    <!-- <li class="active">Here</li> -->
 		                </ol>
 		            </section>
 		            <!-- Main content -->
@@ -132,12 +123,16 @@ class Layout_View
 						switch ($this->data['section']) {
 
 							case 'dashboard':
-								echo self::getDashboardIcons();
-								echo self::getRecentMembers();
+// 								echo self::getDashboardIcons();
+								echo self::getStoreList();
 							break;
 							
-							case 'owners':
-								echo self::getRecentMembers();
+							case 'add-store':
+								echo self::getAddStoreContent();
+							break;
+							
+							case 'store':
+								echo self::getStoreContent();
  							break;
 							
 							case 'settings':
@@ -188,20 +183,12 @@ class Layout_View
 					echo self::getLogInScripts();
 				break;
 				
-				case 'settings':
-					echo self::getSettingsScripts();
+				case 'add-store':
+					echo self::getAddStoreScripts();
 				break;
 				
-				case 'add-owner':
-					echo self::getAddOwnerScripts();
-				break;
-				
-				case 'member':
-					echo self::getMemberScripts();
-				break;
-				
-				case 'profile':
-					echo self::getProfileScripts();
+				case 'store':
+					echo self::getStoreScripts();
 				break;
 			}
 			?>
@@ -518,37 +505,17 @@ class Layout_View
                 <!-- Sidebar Menu -->
                 <ul class="sidebar-menu">
                     <li class="header">MAIN NAVIGATION</li>
-                    <li class="active"><a href="/dashboard/"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
-                    <li>
-						<a href="">
-							<i class="fa fa-envelope"></i> <span>Messages</span>
-							<!-- <small class="label pull-right bg-yellow">12</small> -->
-						</a>
-					</li>
-                    <li><a href="/tasks/"><i class="fa fa-tasks"></i> <span>Tasks</span></a></li>
-                    <li class="treeview">
-                        <a href="#">
+                    <li class="treeview" class="active">
+                        <a href="/dashboard/">
                             <i class="fa fa-users"></i>
-                            <span>Owners</span>
+                            <span>Stores</span>
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="/add-owner/"><i class="fa fa-circle-o"></i> Add owner</a></li>
-                            <li><a href="/owners/"><i class="fa fa-circle-o"></i> Owners list</a></li>
-                            <?php 
-							if ($this->data['condos'])
-							{
-								foreach ($this->data['condos'] as $condo)
-								{
-									?>
-							<li><a href="/condo/<?php echo $condo['condo_id'].'/'.Tools::slugify($condo['condo']).'/'; ?>"><i class="fa fa-institution"></i> <span><?php echo $condo['condo']; ?></span></a></li>		
-									<?php
-								}
-							}
-							?>
+                            <li><a href="/add-store/"><i class="fa fa-circle-o"></i> Add store</a></li>
+                            <li><a href="/dashboard/"><i class="fa fa-circle-o"></i> Store list</a></li>
                         </ul>
                     </li>
-                    <li><a href="/rooms/"><i class="fa fa-home"></i> <span>Rooms</span></a></li>
                 </ul>
                 <!-- /.sidebar-menu -->
             </section>
@@ -626,7 +593,7 @@ class Layout_View
    	 * @return string
    	 */
    	
-   	public function getRecentMembers()
+   	public function getStoreList()
    	{
    		ob_start();
    		?>
@@ -639,58 +606,32 @@ class Layout_View
 					<div class="box-body table-responsive no-padding">
 	                  <table class="table table-hover">
 	                    <tr>
-	                      <th>Member ID</th>
-							<th>Name</th>
-							<th>Phone</th>
-							<th>Email</th>
-							<?php 
-							if ($_SESSION['loginType'] == 1)
-							{
-							?>
-								<th>Added by</th>
-							<?php 
-							} 
-							else 
-							{
-							?>
-								<th>Address</th>
-							<?php 
-							}
-							?>
-							<th>Date</th>
+	                      <th>Store Id</th>
+							<th>Store</th>
+							<th>URL</th>
+							<th>Active</th>
 	                    </tr>
 	                    <?php 
-						foreach ($this->data['lastMembers'] as $member)
+						foreach ($this->data['stores'] as $store)
 						{
 							?>
 						<tr>
 							<td>
-								<a href="/owner/<?php echo $member['member_id']; ?>/<?php echo Tools::slugify($member['name'].' '.$member['last_name']); ?>/">
-									<?php echo $member['member_id']; ?>
+								<a href="/store/<?php echo $store['store_id']; ?>/<?php echo Tools::slugify($store['store']); ?>/">
+									<?php echo $store['store_id']; ?>
 								</a>
 							</td>
 							<td>
-								<a href="/owner/<?php echo $member['member_id']; ?>/<?php echo Tools::slugify($member['name'].' '.$member['last_name']); ?>/" class="member-link">
-									<?php echo $member['name'].' '.$member['last_name']; ?>
+								<a href="/store/<?php echo $store['store_id']; ?>/<?php echo Tools::slugify($store['store']); ?>/" class="member-link">
+									<?php echo $store['store']; ?>
 								</a>
 							</td>
-							<td><?php echo $member['phone_one']; ?></td>
-							<td><?php echo $member['email_one']; ?></td>
-							<?php 
-							if ($_SESSION['loginType'] == 1)
-							{
-								?>
-								<td><?php echo $member['user_name']; ?></td>
-								<?php 
-							} 
-							else 
-							{
-								?>
-								<td><?php echo $member['address']; ?></td>
-								<?php 
-							}
-							?>
-							<td><?php echo Tools::formatMYSQLToFront($member['date']); ?></td>
+							<td>
+								<a href="http://www.kliponads.com/<?php echo $store['store_id']; ?>/<?php echo Tools::slugify($store['store_url']); ?>/" class="member-link" target="_blank">
+									http://www.kliponads.com/<?php echo $store['store_id']; ?>/<?php echo Tools::slugify($store['store_url']); ?>/
+								</a>
+							</td>
+							<td><?php echo $store['active']; ?></td>
 						</tr>
 							<?php
 						}
@@ -705,6 +646,210 @@ class Layout_View
    		ob_end_clean();
    		return $membersRecent;
    	}
+   	
+   	public function getAddStoreHead()
+    {
+    	ob_start();
+    	?>
+    	<script type="text/javascript">
+		</script>
+		
+    	<?php
+    	$head = ob_get_contents();
+    	ob_end_clean();
+    	return $head;
+    }
+    
+    public function getAddStoreScripts()
+    {
+    	ob_start();
+    	?>
+		<!-- InputMask -->
+	    <script src="/plugins/input-mask/jquery.inputmask.js"></script>
+	    <script src="/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+	    <script src="/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+	    <!-- SlimScroll 1.3.0 -->
+    	<script src="/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    	
+    	<script type="text/javascript">
+    	$(function () {
+            //Money Euro
+            $("[data-mask]").inputmask();
+    	});
+		</script>
+		<script src="/js/stores.js"></script>
+    	<?php
+    	$scripts = ob_get_contents();
+    	ob_end_clean();
+    	return $scripts;
+    }
+    
+    public function getAddStoreContent()
+    {
+    	ob_start();
+    	?>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="box box-info">
+					<div class="box-header">
+						<h3 class="box-title">Store info</h3>
+					</div>
+					<div class="box-body">
+						<div class="form-group">
+							<label for="exampleInputEmail1">Store name</label>
+							<input type="text" class="form-control" id="bookTitle" placeholder="store name ...">
+						</div>
+						
+						<div class="form-group">
+							<label for="exampleInputEmail1">Store URL</label>
+							<input type="text" class="form-control" id="bookAuthor" placeholder="store url ...">
+						</div>
+                        
+						<div class="box-footer">
+							<div class="progress progress-sm active">
+		                    	<div class="progress-bar progress-bar-success progress-bar-striped" id="progressSaveMember" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+		                      		<span class="sr-only">20% Complete</span>
+		                    	</div>
+		                  	</div>
+		                    <button type="submit" class="btn btn-info pull-right" id="addBook">Add Store</button>
+		                    <a href="" class="btn btn-success pull-right" id="bookComplete">Next</a>
+	                  	</div>
+						<!-- /.form group -->
+					</div>
+				</div>
+			</div>
+			
+		</div>
+        <?php
+        $content = ob_get_contents();
+        ob_end_clean();
+     	return $content;
+    }
+    
+    public function getStoreScripts()
+    {
+    	ob_start();
+    	?>
+		<link href="/css/uploadfile.css" rel="stylesheet">
+		<script src="/js/jquery.uploadfile.min.js"></script>
+		<script src="/js/stores.js"></script>
+    	<?php
+    	$scripts = ob_get_contents();
+    	ob_end_clean();
+    	return $scripts;
+    }
+    
+    public function getStoreHead()
+    {
+    	ob_start();
+    	?>
+    	<link rel="stylesheet" href="/plugins/datepicker/datepicker3.css">
+    	<link rel="stylesheet" href="/plugins/select2/select2.min.css">
+    	<link rel="stylesheet" href="/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    	<?php
+    	$head = ob_get_contents();
+    	ob_end_clean();
+    	return $head;
+    }
+    
+    public function getStoreContent()
+    {
+    	ob_start();
+    	?>
+    	<div class="row">
+			<div class="col-md-12">
+				<!-- Widget: user widget style 1 -->
+				<div class="box box-widget widget-user-2">
+				
+					<!-- Add the bg color to the header using any of the bg-* classes -->
+					<div class="widget-user-header bg-aqua-active">
+						<h3 class="widget-user-username"><strong><?php echo $this->data['storeInfo']['store']; ?></strong></h3>
+						<div class="clearfix"></div>
+					</div>
+				</div><!-- /.widget-user -->
+			</div>
+    	</div>
+    	
+		<div class="row edit-user-info">
+			<div class="col-md-12">
+				<div class="box box-info">
+					<div class="box-body">
+						<div class="form-group">
+							<label for="exampleInputEmail1">Store name</label>
+							<input type="hidden" id="storeId" value="<?php echo $this->data['storeInfo']['store_id']; ?>">
+							<input type="text" class="form-control" id="bookTitle" placeholder="store name ..." value="<?php echo $this->data['storeInfo']['store']; ?>" >
+						</div>
+						
+						<div class="form-group">
+							<label for="exampleInputEmail1">Store URL</label>
+							<input type="text" class="form-control" id="bookAuthor" placeholder="store url ..." value="<?php echo $this->data['storeInfo']['store_url']; ?>" >
+						</div>
+						
+                        <div class="box-footer">
+							<div class="row">
+								<div class="col-sm-offset-8 col-sm-2"></div>
+								<div class="col-sm-2">
+									<button type="submit" class="btn btn-danger pull-right btn-sm" id="deleteBook">Delete Book</button>
+									<button type="submit" class="btn btn-info pull-right btn-sm" id="updateBook">Update info</button>
+								</div>
+							</div>
+		                    
+	                  	</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		
+		<div class="row">
+			<div class="col-md-12">
+				<!-- Custom Tabs (Pulled to the right) -->
+				<div class="nav-tabs-custom">
+					<ul class="nav nav-tabs pull-right">
+						<li class="pull-left header"><i class="fa fa-th"></i>Store Sliders</li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active" id="tab_3-2">
+							<div class="row">
+								
+								<div class="col-sm-12">
+									<p>Slider size: 1600 * 1067 px</p>
+									<div class="col-sm-6" id="uploadSliders">
+										Browse
+									</div>
+								</div>
+							</div>
+							
+							<div class="row sliders-box" id="sliderBox">
+							<?php 
+							if ($this->data['sliders'])
+							{
+								foreach ($this->data['sliders'] as $slider)
+								{
+									?>
+								<div class="col-md-2 slider">
+									<div class="marker-img">
+										<img src="/images/sliders/medium/<?php echo $slider['slider']; ?>" />
+									</div>
+									<div class="delete">
+										<a href="javascript: void(0);" slider-id="<?php echo $slider['slider_id']; ?>" class="delete-slider">delete</a>
+									</div>
+								</div>
+									<?php
+								}
+							}
+							?>
+							</div>
+						</div><!-- /.tab-pane -->
+					</div><!-- /.tab-content -->
+				</div><!-- nav-tabs-custom -->
+			</div><!-- /.col -->
+		</div>
+        <?php
+        $content = ob_get_contents();
+        ob_end_clean();
+        return $content;
+    }
     
     public function getSectionHead()
     {
@@ -757,7 +902,7 @@ class Layout_View
         <footer class="main-footer">
             <!-- To the right -->
             <div class="pull-right hidden-xs">
-                Property Managements
+                Kliponads
             </div>
             <!-- Default to the left -->
             <strong>Copyright &copy; 2016 <a href="#"><?php echo $this->data['appInfo']['siteName']; ?></a>.</strong> All rights reserved.

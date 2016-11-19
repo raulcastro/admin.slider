@@ -94,7 +94,122 @@ class Layout_Model
 		}
 	}
 	
+	public function getActiveStores()
+	{
+		try {
+			$query = 'SELECT * FROM stores
+					WHERE active = 1
+					';
+			
+			return $this->db->getArray($query);
+		} catch (Exception $e) {
+			return false;
+		}
+	}
 	
+	public function addStore($data)
+	{
+		try {
+			$query = 'INSERT INTO stores(store, store_url) VALUES(?, ?)';
+				
+			$prep=$this->db->prepare($query);
+	
+			$prep->bind_param('ss', $data['storeName'], $data['storeUrl']);
+	
+			if ($prep->execute())
+			{
+				return $prep->insert_id;
+			}
+			else
+			{
+				printf("Errormessage: %s\n", $prep->error);
+			}
+				
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+	
+	function getStoreByStoreId($storeId)
+	{
+		try {
+			$query = 'SELECT * FROM stores WHERE store_id = '.$storeId;
+			return $this->db->getRow($query);
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+	
+	function updateStore($data)
+	{
+		try {
+			$query = 'UPDATE stores SET store = ?, store_url = ? WHERE store_id = '.$data['storeId'];
+
+			$prep = $this->db->prepare($query);
+			
+			$prep->bind_param('ss', $data['storeName'], $data['storeUrl']);
+			
+			return $prep->execute();
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+	
+	function deleteStore($storeId)
+	{
+		$storeId = (int) $storeId;
+		try {
+			$query = 'DELETE FROM stores WHERE store_id = '.$storeId;
+			
+			return $this->db->run($query);
+			
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+	
+	function addSlider($storeId, $slider)
+	{
+		try {
+			$query = 'INSERT INTO sliders(store_id, slider) VALUES(?, ?)';
+			
+			$prep = $this->db->prepare($query);
+			
+			$prep->bind_param('is', $storeId, $slider);
+			
+			return $prep->execute();
+			
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+	
+	function getSliders($storeId)
+	{
+		try {
+			$storeId = (int) $storeId;
+			
+			$query = 'SELECT * FROM sliders WHERE store_id = '.$storeId;
+			
+			return $this->db->getArray($query);
+			
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+	
+	function deleteSlider($sliderId)
+	{
+		try {
+			$sliderId = (int) $sliderId;
+			
+			$query = 'DELETE FROM sliders WHERE slider_id = '.$sliderId;
+			
+			return $this->db->run($query);
+		} catch (Exception $e) {
+			return false;
+		}
+	}
 }
 
 

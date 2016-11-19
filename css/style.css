@@ -18,10 +18,6 @@
     background: #f7f7f7;
 }
 
-.edit-user-info {
-	display: none;
-}
-
 .avatar-user-change {
     float: left;
 }
@@ -300,4 +296,24 @@
 
 .direct-chat-text .unread {
 	weight: bold;
+}
+
+
+
+/* Books */
+
+#bookComplete {
+	display: none;
+}
+
+#updateBook, #showEditUser {
+    margin-right: 10px;
+}
+
+.sliders-box {
+    margin-top: 30px;
+}
+
+.sliders-box .slider {
+    margin: 0 10px 20px 0!important;
 }
