@@ -787,8 +787,8 @@ class Layout_View
 						
                         <div class="box-footer">
 							<div class="row">
-								<div class="col-sm-offset-8 col-sm-2"></div>
-								<div class="col-sm-2">
+								<div class="col-md-9"></div>
+								<div class="col-md-3">
 									<button type="submit" class="btn btn-danger pull-right btn-sm" id="deleteBook">Delete Book</button>
 									<button type="submit" class="btn btn-info pull-right btn-sm" id="updateBook">Update info</button>
 								</div>
@@ -827,9 +827,9 @@ class Layout_View
 								foreach ($this->data['sliders'] as $slider)
 								{
 									?>
-								<div class="col-md-2 slider">
+								<div class="col-md-3 col-lg-2 slider">
 									<div class="marker-img">
-										<img src="/images/sliders/medium/<?php echo $slider['slider']; ?>" />
+										<img src="/images/sliders/medium/<?php echo $slider['slider']; ?>" class="img-responsive" />
 									</div>
 									<div class="delete">
 										<a href="javascript: void(0);" slider-id="<?php echo $slider['slider_id']; ?>" class="delete-slider">delete</a>

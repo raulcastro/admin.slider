@@ -317,3 +317,8 @@
 .sliders-box .slider {
     margin: 0 10px 20px 0!important;
 }
+
+.marker-img {
+	max-height: 140px!important;
+	overflow: hidden;
+}
